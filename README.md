@@ -15,18 +15,15 @@ Multiple JSON files in the tests directory.  Each file is [EDN](https://www.ietf
 
 ```cbor-edn
 {
-  "meta": {
-    "name": "mt0-good",
-    "purpose": "Plain CBOR integers storable as major type 0 (mt0)",
-    "succeed": true
-  },
+  "title": "mt0-good",
+  "description": "Plain CBOR integers storable as major type 0 (mt0), from RFC 8949 appendix A",
+  "fail": false,
   "tests": [
     {
       "description": "mt0 zero",
-      "encoded": b64'AA==',
-      "decoded": 0
-    }
-  ]
+      "encoded": h'00',
+      "decoded": 0,
+    },
+  ],
 }
-
 ```

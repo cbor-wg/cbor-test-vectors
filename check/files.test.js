@@ -22,16 +22,24 @@ async function files(dir) {
 
 const base = fileURLToPath(new URL('../tests', import.meta.url));
 const f = await files(base);
-suite.each(f)('File %s', async name => {
-  const grammarSource = join(base, name);
+suite.each(f)('File %s', async file => {
+  const grammarSource = join(base, file);
   const input = await readFile(grammarSource, 'utf8');
   const encoded = edn.parseEDN(input, {grammarSource});
   const decoded = cbor.decode(encoded);
-  const {meta, tests} = decoded;
-  assert(meta);
+  const {title, fail, tests} = decoded;
   assert(tests);
-  test.each(tests)('$description', t => {
-    assert.deepEqual(cbor.encode(t.decoded), t.encoded);
-    assert.deepEqual(cbor.decode(t.encoded), t.decoded);
+  test.each(tests)(`${title} - $description`, t => {
+    if (fail) {
+      if (t.decoded) {
+        assert.throws(() => cbor.encode(t.decoded));
+      }
+      if (t.encoded) {
+        assert.throws(() => cbor.decode(t.encoded));
+      }
+    } else {
+      assert.deepEqual(cbor.encode(t.decoded), t.encoded);
+      assert.deepEqual(cbor.decode(t.encoded), t.decoded);
+    }
   });
 });
