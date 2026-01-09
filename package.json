@@ -1,0 +1,39 @@
+{
+  "name": "cbor-test-vectors",
+  "version": "1.0.0",
+  "description": "Test vectors for CBOR",
+  "type": "module",
+  "files": ["tests"],
+  "scripts": {
+    "test": "vitest run",
+    "lint": "eslint .",
+    "build": "npm run lint && npm run test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cbor-wg/cbor-test-vectors.git"
+  },
+  "keywords": [
+    "cbor",
+    "rfc8949",
+    "vector",
+    "test",
+    "examples"
+  ],
+  "author": "Joe Hildebrand <joe-github@cursive.net>",
+  "license": "BSD-2-Clause",
+  "bugs": {
+    "url": "https://github.com/cbor-wg/cbor-test-vectors/issues"
+  },
+  "homepage": "https://github.com/cbor-wg/cbor-test-vectors#readme",
+  "devDependencies": {
+    "@cto.af/eslint-config": "6.2.1",
+    "cbor-edn": "0.2.2",
+    "cbor2": "2.0.1",
+    "eslint": "9.39.2",
+    "vitest": "4.0.16"
+  },
+  "engines": {
+    "node": ">=24"
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "meta": {
+    "name": "mt0-good",
+    "purpose": "Plain CBOR integers storable as major type 0 (mt0)",
+    "succeed": true
+  },
+  "tests": [
+    {
+      "description": "mt0 zero",
+      "encoded": b64'AA==',
+      "decoded": 0
+    }
+  ]
+}

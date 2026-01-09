@@ -1,6 +1,32 @@
-# cbor-test-vectors
-Test vectors for CBOR
+# CBOR Test Vectors
 
-Originally copied from https://github.com/hildjj/node-cbor/
+Test vectors for [CBOR](https://datatracker.ietf.org/wg/cbor/documents/).  See
+[RFC 8949](https://www.rfc-editor.org/rfc/rfc8949) for a starting point.
 
-Checked in the original version so we can work together to pull it apart into a format more easily used from lots of programming languages.
+## Intent
+
+Ensure full coverage of a typical CBOR implementation, including failing in
+all of the correct places.  Different libraries may make different choices, or
+have configurable options to act in different modes.
+
+## Format
+
+Multiple JSON files in the tests directory.  Each file is [EDN](https://www.ietf.org/archive/id/draft-ietf-cbor-edn-literals-19.html) of the form:
+
+```cbor-edn
+{
+  "meta": {
+    "name": "mt0-good",
+    "purpose": "Plain CBOR integers storable as major type 0 (mt0)",
+    "succeed": true
+  },
+  "tests": [
+    {
+      "description": "mt0 zero",
+      "encoded": b64'AA==',
+      "decoded": 0
+    }
+  ]
+}
+
+```
