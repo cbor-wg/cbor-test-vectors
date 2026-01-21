@@ -27,3 +27,23 @@ Multiple JSON files in the tests directory.  Each file is [EDN](https://www.ietf
   ],
 }
 ```
+
+## Processing
+
+- Parse the whole .edn file as CBOR-EDN, generating a CBOR byte string.
+- Alternately, read the .cbor file which should always match the .edn file, but not require an EDN parser.
+- Decode the byte string to your internal representation of CBOR.
+- For each test in tests:
+  - "encoded" will now be a CBOR byte string.
+  - "decoded" will now be your internal representation of an item.
+  - Encode "decoded", and ensure you get "encoded".
+  - Decode "encoded", and ensure you get "decoded".
+  - If "fail" is true, ensure that the above steps throw an error (there may be only one of "encoded" or "decoded" if "fail" is true).
+
+## Checking the tests with nodejs and cbor2
+
+- Install [nodejs](https://nodejs.org/)
+- Install [pnpm](https://pnpm.io/)
+- Install dependencies with `pnpm install`
+- Run checks with `npm test`
+- If you modify any .js file, run lint checks with `npm run lint`
