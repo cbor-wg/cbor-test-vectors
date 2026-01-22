@@ -17,12 +17,14 @@ Multiple JSON files in the tests directory.  Each file is [EDN](https://www.ietf
 {
   "title": "mt0-good",
   "description": "Plain CBOR integers storable as major type 0 (mt0), from RFC 8949 appendix A",
-  "fail": false,
+  "fail": false, # Fail all tests in file?
   "tests": [
     {
       "description": "mt0 zero",
       "encoded": h'00',
       "decoded": 0,
+      "roundtrip": true, # optional
+      "fail": false, # optional
     },
   ],
 }
@@ -36,9 +38,9 @@ Multiple JSON files in the tests directory.  Each file is [EDN](https://www.ietf
 - For each test in tests:
   - "encoded" will now be a CBOR byte string.
   - "decoded" will now be your internal representation of an item.
-  - Encode "decoded", and ensure you get "encoded".
+  - Unless roundtrip is false, encode "decoded", and ensure you get "encoded".
   - Decode "encoded", and ensure you get "decoded".
-  - If "fail" is true, ensure that the above steps throw an error (there may be only one of "encoded" or "decoded" if "fail" is true).
+  - If "fail" is true, ensure that the above steps throw an error (there may be only one of "encoded" or "decoded" if "fail" is true).  "roundtrip" is ignored if "fail" is true.
 
 ## Checking the tests with nodejs and cbor2
 

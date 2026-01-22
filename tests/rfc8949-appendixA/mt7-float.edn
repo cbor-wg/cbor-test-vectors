@@ -88,37 +88,43 @@
     {
       "description": "Infinity coded as f32 instead of f16",
       # Can't round-trip to non-preferred
-      "cbor": h'fa7f800000',
+      "roundtrip": false,
+      "encoded": h'fa7f800000',
       "decoded": Infinity,
     },
     {
       "description": "Trivial NaN coded as f32 instead of f16",
       # Can't round-trip to non-preferred
-      "cbor": h'fa7fc00000',
+      "roundtrip": false,
+      "encoded": h'fa7fc00000',
       "decoded": NaN,
     },
         {
       "description": "Negative Infinity coded as f32 instead of f16",
       # Can't round-trip to non-preferred
-      "cbor": h'faff800000',
+      "roundtrip": false,
+      "encoded": h'faff800000',
       "decoded": -Infinity,
     },
     {
       "description": "Infinity coded as f64 instead of f16",
       # Can't round-trip to non-preferred
-      "cbor": h'fb7ff0000000000000',
+      "roundtrip": false,
+      "encoded": h'fb7ff0000000000000',
       "decoded": Infinity,
     },
     {
       "description": "Trivial NaN coded as f64 instead of f16",
       # Can't round-trip to non-preferred
-      "cbor": h'fb7ff8000000000000',
+      "roundtrip": false,
+      "encoded": h'fb7ff8000000000000',
       "decoded": NaN,
     },
         {
       "description": "Negative Infinity coded as f64 instead of f16",
       # Can't round-trip to non-preferred
-      "cbor": h'fbfff0000000000000',
+      "roundtrip": false,
+      "encoded": h'fbfff0000000000000',
       "decoded": -Infinity,
     },
   ],
