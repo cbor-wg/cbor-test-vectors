@@ -29,6 +29,8 @@ function hasOwn(o, p) {
   return Object.prototype.hasOwnProperty.call(o, p);
 }
 
+const allEncoded = new Map();
+
 const base = fileURLToPath(new URL('../tests', import.meta.url));
 const f = await files(base);
 suite.each(f)('File %s', async file => {
@@ -58,10 +60,21 @@ suite.each(f)('File %s', async file => {
   assert(tests);
   test.each(tests)(`${title} - $description`, vector => {
     const {
-      cbor, encoded, decoded, log, fail: localFail,
+      description, encoded, decoded, log,
+      roundtrip = true,
+      fail: localFail,
       encodeOptions: localEncodeOptions,
       decodeOptions: localDecodeOptions,
     } = vector;
+    if (encoded) {
+      const encodedHex = u8toHex(encoded);
+      const place = `${title} - ${description}`;
+      const prevPlace = allEncoded.get(encodedHex);
+      if (prevPlace) {
+        throw new Error(`Duplicate: "${prevPlace}" and "${place}"`);
+      }
+      allEncoded.set(encodedHex, place);
+    }
     const encOpts = {...encodeOptions, ...localEncodeOptions};
     const decOpts = {...decodeOptions, ...localDecodeOptions};
     if (fail || localFail) {
@@ -75,18 +88,15 @@ suite.each(f)('File %s', async file => {
         console.log(vector);
       }
     } else if (hasOwn(vector, 'encoded') && hasOwn(vector, 'decoded')) {
-      const enc = encode(decoded, encOpts);
-      assert.equal(u8toHex(enc), u8toHex(encoded));
+      let enc = undefined;
+      if (roundtrip) {
+        enc = encode(decoded, encOpts);
+        assert.equal(u8toHex(enc), u8toHex(encoded));
+      }
       const dec = decode(encoded, decOpts);
       assert.deepEqual(dec, decoded);
       if (log) {
         console.log({...vector, enc, dec});
-      }
-    } else if (hasOwn(vector, 'cbor') && hasOwn(vector, 'decoded')) {
-      const dec = decode(cbor, decOpts);
-      assert.deepEqual(dec, decoded);
-      if (log) {
-        console.log({...vector, dec});
       }
     } else {
       assert(false, `Unknown vector combination: ${inspect(vector)}`);
