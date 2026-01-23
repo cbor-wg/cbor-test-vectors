@@ -68,7 +68,7 @@
       "encoded": h'5f',
     },
     {
-      "description": "bytes: Indeterminite bytestring includes a non-bytes chunk",
+      "description": "bytes: Indeterminate bytestring includes a non-bytes chunk",
       "encoded": h'5f01ff',
     },
     {
@@ -80,7 +80,7 @@
       "encoded": h'7432303133',
     },
     {
-      "description": "utf8: Indeterminite string includes a non-string chunk",
+      "description": "utf8: Indeterminate string includes a non-string chunk",
       "encoded": h'7f01ff',
     },
     {
