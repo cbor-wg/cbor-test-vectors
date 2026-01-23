@@ -23,8 +23,8 @@ Multiple JSON files in the tests directory.  Each file is [EDN](https://www.ietf
       "description": "mt0 zero",
       "encoded": h'00',
       "decoded": 0,
-      "roundtrip": true, # optional
-      "fail": false, # optional
+      "roundtrip": true, # optional, true is the default
+      "fail": false, # optional, false is the default
     },
   ],
 }
@@ -38,7 +38,7 @@ Multiple JSON files in the tests directory.  Each file is [EDN](https://www.ietf
 - For each test in tests:
   - "encoded" will now be a CBOR byte string.
   - "decoded" will now be your internal representation of an item.
-  - Unless roundtrip is false, encode "decoded", and ensure you get "encoded".
+  - Unless roundtrip is false, encode "decoded", and ensure you get "encoded".  If roundtrip is not specified, it defaults to true.
   - Decode "encoded", and ensure you get "decoded".
   - If "fail" is true, ensure that the above steps throw an error (there may be only one of "encoded" or "decoded" if "fail" is true).  "roundtrip" is ignored if "fail" is true.
 
@@ -49,3 +49,6 @@ Multiple JSON files in the tests directory.  Each file is [EDN](https://www.ietf
 - Install dependencies with `pnpm install`
 - Run checks with `npm test`
 - If you modify any .js file, run lint checks with `npm run lint`
+- If you modify any .edn file, regenerate the .cbor files with
+  `VECTOR_MODE=gen npm test`, then run `npm test` to ensure that all of the
+  .cbor files match their .edn equivalents.
