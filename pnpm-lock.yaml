@@ -15,8 +15,8 @@ importers:
         specifier: 0.2.2
         version: 0.2.2
       cbor2:
-        specifier: 2.1.2
-        version: 2.1.2
+        specifier: 2.2.1
+        version: 2.2.1
       eslint:
         specifier: 9.39.2
         version: 9.39.2
@@ -477,8 +477,8 @@ packages:
     resolution: {integrity: sha512-teHnpDGcDzwouFJgCJLpDY2zMaEOYvYDryd6sln67wPrCuObmwriG1NAA1w7rUIf/l++bNdts4U7WeVdYTGwLg==}
     engines: {node: '>=18.7'}
 
-  cbor2@2.1.2:
-    resolution: {integrity: sha512-cBJtsjQ3FDtPcxfxJtlGKvbcclShtU47E9UP8kjyDI/Kkfl7JrkZuTuYTcJG+I7bmxyoZPt256OZmp699rUf0w==}
+  cbor2@2.2.1:
+    resolution: {integrity: sha512-gZrpQweRAfue3Gmd4pG+AakX1zqVrOmXsu+2FwfUfFyYujNGSAOp81iPbHgnG212Xr3KV5vZXxxCXQRbWjZCWw==}
     engines: {node: '>=20'}
 
   chai@6.2.2:
@@ -1327,7 +1327,7 @@ snapshots:
 
   cbor2@1.11.0: {}
 
-  cbor2@2.1.2:
+  cbor2@2.2.1:
     dependencies:
       '@cto.af/wtf8': 0.0.4
 

@@ -1,17 +1,19 @@
 /* eslint-disable no-console */
 import {assert, suite, test} from 'vitest';
 import {decode, encode} from 'cbor2';
+import {hexToU8, u8toHex} from 'cbor2/utils';
 import {inspect, isDeepStrictEqual} from 'node:util';
 import {join, relative} from 'node:path';
+import {parseEDN, registerAppString} from 'cbor-edn';
 import {readFile, readdir, writeFile} from 'node:fs/promises';
+import {ByteTree} from 'cbor-edn/lib/byteTree.js';
 import {fileURLToPath} from 'node:url';
-import {parseEDN} from 'cbor-edn';
-import {u8toHex} from 'cbor2/utils';
 
 const FILE_TYPE = '.edn';
 
 async function files(dir) {
   const res = [];
+  process.argv.slice(2);
   for (const f of await readdir(dir, {
     withFileTypes: true,
     recursive: true,
@@ -22,6 +24,28 @@ async function files(dir) {
   }
   return res;
 }
+
+const f9 = new Uint8Array([0xf9]);
+const fa = new Uint8Array([0xfa]);
+const fb = new Uint8Array([0xfb]);
+
+function floatAppString(prefix, str) {
+  assert.equal(prefix, 'float');
+  const buf = hexToU8(str);
+
+  switch (buf.length) {
+    case 2:
+      return [null, new ByteTree(f9, buf)];
+    case 4:
+      return [null, new ByteTree(fa, buf)];
+    case 8:
+      return [null, new ByteTree(fb, buf)];
+    default:
+      throw new Error(`invalid float length: ${buf.length}`);
+  }
+}
+
+registerAppString('float', floatAppString);
 
 // Don't just check truthiness of property, since the property
 // might be undefined, false, 0, -0, etc.
@@ -52,12 +76,17 @@ suite.each(f)('File %s', async file => {
     default:
       throw new Error(`Unknown VECTOR_MODE: "${process.env.VECTOR_MODE}"`);
   }
-  const decodedFile = decode(encodedFile);
+  const decodedFile = decode(encodedFile, {keepNanPayloads: true});
 
   const {
-    title, fail, encodeOptions = {}, decodeOptions = {}, tests,
+    title, fail, encodeOptions = {}, decodeOptions = {},
   } = decodedFile;
+  let {tests} = decodedFile;
   assert(tests);
+  if (tests.some(t => t.only)) {
+    tests = tests.filter(t => t.only);
+  }
+
   test.each(tests)(`${title} - $description`, vector => {
     const {
       description, encoded, decoded, log,
@@ -66,12 +95,13 @@ suite.each(f)('File %s', async file => {
       encodeOptions: localEncodeOptions,
       decodeOptions: localDecodeOptions,
     } = vector;
+
     if (encoded) {
       const encodedHex = u8toHex(encoded);
       const place = `${title} - ${description}`;
       const prevPlace = allEncoded.get(encodedHex);
       if (prevPlace) {
-        throw new Error(`Duplicate: "${prevPlace}" and "${place}"`);
+        throw new Error(`Duplicate: "${prevPlace}" and "${place}": h'${encodedHex}'`);
       }
       allEncoded.set(encodedHex, place);
     }
@@ -94,7 +124,7 @@ suite.each(f)('File %s', async file => {
         assert.equal(u8toHex(enc), u8toHex(encoded));
       }
       const dec = decode(encoded, decOpts);
-      assert.deepEqual(dec, decoded);
+      assert.deepEqual(dec, decoded, `Decoding.  Original: h'${u8toHex(encoded)}'`);
       if (log) {
         console.log({...vector, enc, dec});
       }

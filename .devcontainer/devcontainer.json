@@ -5,6 +5,7 @@
     "vscode": {
       "extensions": [
         "editorconfig.editorconfig",
+        "max-schlesinger.cbor-edn-editor",
         "vitest.explorer"
       ],
       "settings": {
