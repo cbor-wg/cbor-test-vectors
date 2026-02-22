@@ -1,6 +1,10 @@
 # spike tests
 
 These tests are from https://github.com/cabo/cbor-test-vector-spike
-- contributed by Carsten Borman
-- converted to EDN by a script
-- duplicates from other tests removed
+- converted to EDN and CBOR by a script ()
+- contributed by Carsten Bormann
+
+In contrast to the previous revision, duplicates from other tests have
+not been removed, as they contain additional information (flags to
+indicate serialization constraints that are met).
+
